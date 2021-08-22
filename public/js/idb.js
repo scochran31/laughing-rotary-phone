@@ -1,0 +1,40 @@
+let db;
+
+const request = indexedDB.open('budget_tracker', 1);
+
+request.onupgradeneeded = function (event) {
+    // save a reference to the database
+    const db = event.target.result;
+    // create an object store (table) called `new_tracker`, set it to have an auto incrementing primary key of sorts
+    db.createObjectStore('new_tracker', { autoIncrement: true });
+};
+
+// upon a successful
+request.onsuccess = function (event) {
+    // when db is successfully created with its object store (from onupgradeneeded event above) or simply established a connection, save a reference to db in global variable
+    db = event.target.result;
+
+    // check if app is online
+    if (navigator.onLine) {
+        // uploadTracker();
+    }
+};
+
+request.onerror = function (event) {
+    console.log(event.target.errorCode);
+};
+
+function saveRecord(record) {
+    const transaction = db.transaction(['new_tracker'], 'readwrite');
+    const trackerObjectStore = transaction.createObjectStore('new_tracker');
+
+    trackerObjectStore.add(record);
+};
+
+function uploadTransaction() {
+    const transaction = db.transaction(['new_transaction'], 'readWrite');
+
+    const trackerObjectStore = transaction.createObjectStore('new_transaction');
+
+    const getAll = budgetObjectStore.getAll();
+}
