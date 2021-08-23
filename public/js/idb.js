@@ -36,7 +36,7 @@ function uploadTransaction() {
 
     const trackerObjectStore = transaction.createObjectStore('new_transaction');
 
-    const getAll = budgetObjectStore.getAll();
+    const getAll = trackerObjectStore.getAll();
 
     getAll.onsuccess = function () {
         if (getAll.result.length > 0) {
@@ -47,6 +47,22 @@ function uploadTransaction() {
                     Accept: 'application/json, text/plain, */*', 'Content-Type': 'application/json'
                 }
             })
+                .then(response => response.json())
+                .then(serverResponse => {
+                    if (serverResponse.message) {
+                        throw new Error(serverResponse);
+                    }
+                    const transaction = db.transaction(['new_transaction'], 'readwrite');
+
+                    const trackerObjectStore = transaction.objectStore('new_transaction');
+
+                    trackerObjectStore.clear();
+
+                    alert('All saved transactions are submitted!')
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 }
