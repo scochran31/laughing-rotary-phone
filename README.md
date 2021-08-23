@@ -14,6 +14,7 @@
   ## Description
   This is an online budget PWA. It has been set up with a service worker to allow for offline functionality.
 
+![Budget Traker](https://user-images.githubusercontent.com/79678327/130406368-0a425b20-9a0b-4286-b901-3df34eb53ff9.jpg)
 
 
   ## Installation
