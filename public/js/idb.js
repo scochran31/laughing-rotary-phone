@@ -5,8 +5,8 @@ const request = indexedDB.open('budget_tracker', 1);
 request.onupgradeneeded = function (event) {
     // save a reference to the database
     const db = event.target.result;
-    // create an object store (table) called `new_tracker`, set it to have an auto incrementing primary key of sorts
-    db.createObjectStore('new_tracker', { autoIncrement: true });
+    // create an object store (table) called `new_transaction`, set it to have an auto incrementing primary key of sorts
+    db.createObjectStore('new_transaction', { autoIncrement: true });
 };
 
 // upon a successful
@@ -16,7 +16,7 @@ request.onsuccess = function (event) {
 
     // check if app is online
     if (navigator.onLine) {
-        // uploadTracker();
+        uploadTransaction();
     }
 };
 
@@ -25,18 +25,18 @@ request.onerror = function (event) {
 };
 
 function saveRecord(record) {
-    const transaction = db.transaction(['new_tracker'], 'readwrite');
-    const trackerObjectStore = transaction.createObjectStore('new_tracker');
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
+    const budgetObjectStore = transaction.createObjectStore('new_transaction');
 
-    trackerObjectStore.add(record);
+    budgetObjectStore.add(record);
 };
 
 function uploadTransaction() {
     const transaction = db.transaction(['new_transaction'], 'readWrite');
 
-    const trackerObjectStore = transaction.createObjectStore('new_transaction');
+    const budgetObjectStore = transaction.createObjectStore('new_transaction');
 
-    const getAll = trackerObjectStore.getAll();
+    const getAll = budgetObjectStore.getAll();
 
     getAll.onsuccess = function () {
         if (getAll.result.length > 0) {
@@ -54,9 +54,9 @@ function uploadTransaction() {
                     }
                     const transaction = db.transaction(['new_transaction'], 'readwrite');
 
-                    const trackerObjectStore = transaction.objectStore('new_transaction');
+                    const budgetObjectStore = transaction.objectStore('new_transaction');
 
-                    trackerObjectStore.clear();
+                    budgetObjectStore.clear();
 
                     alert('All saved transactions are submitted!')
                 })
